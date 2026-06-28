@@ -244,7 +244,3 @@ without touching the orchestration layer. The handler calls `reviewFiles()` —
 it doesn't know which strategy was selected.
 
 ---
-
-## Resume Bullet
-
-> *"Built a Spring Boot GitHub webhook service in Java 17 that validated HMAC-SHA256 signatures using constant-time comparison, parsed PR diffs to detect backend failure patterns (N+1 queries, missing idempotency, absent timeouts), routed to a two-pass agent reviewer for cross-file reasoning, and posted structured inline reviews via GitHub API — using CompletableFuture async processing to handle webhook timeout constraints"*
