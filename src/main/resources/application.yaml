@@ -1,0 +1,99 @@
+# ============================================================
+# PR Review Bot - Application Configuration
+# ============================================================
+# Copy this file to application-local.yaml for local dev
+# Set environment variables or override values below
+# ============================================================
+
+server:
+  port: ${PORT:4000}
+
+spring:
+  application:
+    name: pr-review-bot
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+# ============================================================
+# GitHub Configuration
+# ============================================================
+github:
+  webhook:
+    secret: ${GITHUB_WEBHOOK_SECRET:super-secret-123}
+  token: ${GITHUB_TOKEN:<token>}
+  max-files-per-pr: ${GITHUB_MAX_FILES:20}
+  max-additions-per-file: ${GITHUB_MAX_ADDITIONS:400}
+
+# ============================================================
+# OpenAI Configuration
+# ============================================================
+openai:
+  api:
+    key: ${OPENAI_API_KEY:<keys>}
+    url: ${OPENAI_API_URL:https://api.openai.com/v1/chat/completions}
+    model: ${OPENAI_MODEL:gpt-4o}
+    max-tokens: ${OPENAI_MAX_TOKENS:3000}
+    # Temperature — keep low for deterministic reviews
+    temperature: ${OPENAI_TEMPERATURE:0.2}
+    timeout-seconds: ${OPENAI_TIMEOUT:60}
+
+# ============================================================
+# Review Bot Behaviour
+# ============================================================
+bot:
+  review:
+    trigger-on-synchronize: ${BOT_TRIGGER_ON_SYNC:true}
+    min-lines-threshold: ${BOT_MIN_LINES:5}
+    post-approval-comment: ${BOT_POST_APPROVAL:true}
+    agent-mode-enabled: ${BOT_AGENT_MODE:false}
+  # File extensions to skip entirely
+  skip-extensions:
+    - .lock
+    - .png
+    - .jpg
+    - .jpeg
+    - .gif
+    - .svg
+    - .ico
+    - .md
+    - .txt
+    - .env
+    - .gitignore
+    - .yaml
+    - .yml
+    - .xml
+    - .json
+    - .csv
+    - .html   # future
+    - .css    # future
+    - .scss   # future
+
+# ============================================================
+# Review Store (in-memory, no DB required for hackathon)
+# ============================================================
+store:
+  max-entries: ${STORE_MAX_ENTRIES:100}
+
+# ============================================================
+# Actuator / Monitoring
+# ============================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# ============================================================
+# Logging
+# ============================================================
+logging:
+  level:
+    com.prbot: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
